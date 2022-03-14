@@ -109,7 +109,7 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
   fRandomSeed = 1;
 
   doFiber     = true;
-  doReflector = true;
+  doReflector = false;
   doPMT       = true;
 
   fiberUnit   = new G4Box("fiber_SQ", (fFiberUnitH/2) *mm, (1./2) *mm, (fTowerDepth/2) *mm);
