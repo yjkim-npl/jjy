@@ -61,7 +61,7 @@ DRsimDetectorConstruction::DRsimDetectorConstruction()
 
   PMTT = 0.3*mm;
   filterT = 0.01*mm;
-  reflectorT = 0.3*mm;
+  reflectorT = 0.03*mm;
 
   fVisAttrOrange = new G4VisAttributes(G4Colour(1.0,0.5,0.,1.0));
   fVisAttrOrange->SetVisibility(true);
@@ -106,7 +106,7 @@ G4VPhysicalVolume* DRsimDetectorConstruction::Construct() {
   fFiberUnitH = 1.;
 
 
-  fRandomSeed = 1;
+  // fRandomSeed = 1;
 
   doFiber     = true;
   doReflector = false;
@@ -154,16 +154,17 @@ void DRsimDetectorConstruction::ModuleBuild(G4LogicalVolume* ModuleLogical_[],
     moduleName = setModuleName(i);
     
     dimCalc->SetisModule(true);
-    module = new G4Box("Mudule", (fModuleH/2) *mm, (fModuleW/2) *mm, (fTowerDepth/2) *mm );
+    module = new G4Box("Mudule", (fModuleH/2.) *mm, (fModuleW/2.) *mm, (fTowerDepth/2.) *mm );
     ModuleLogical_[i] = new G4LogicalVolume(module,FindMaterial("Copper"),moduleName);
-    G4VPhysicalVolume* modulePhysical = new G4PVPlacement(0,dimCalc->GetOrigin(i),ModuleLogical_[i],moduleName,worldLogical,false,0,checkOverlaps);
+    // G4VPhysicalVolume* modulePhysical = new G4PVPlacement(0,dimCalc->GetOrigin(i),ModuleLogical_[i],moduleName,worldLogical,false,0,checkOverlaps);
+    new G4PVPlacement(0,dimCalc->GetOrigin(i),ModuleLogical_[i],moduleName,worldLogical,false,0,checkOverlaps);
 
-    if ( doPMT ) {
+    // if ( doPMT ) {
       dimCalc->SetisModule(false);  
-      pmtg = new G4Box("PMTG", (fModuleH/2) *mm, (fModuleW/2) *mm, (PMTT/2) *mm );
+      pmtg = new G4Box("PMTG", (fModuleH/2.) *mm, (fModuleW/2.) *mm, (PMTT+filterT)/2. *mm );
       PMTGLogical_[i]  = new G4LogicalVolume(pmtg,FindMaterial("G4_AIR"),moduleName);
       new G4PVPlacement(0,dimCalc->GetOrigin_PMTG(i),PMTGLogical_[i],moduleName,worldLogical,false,0,checkOverlaps);
-    }
+    // }
 
     FiberImplement(i,ModuleLogical_,fiberUnitIntersection_,fiberCladIntersection_,fiberCoreIntersection_);
 
@@ -187,9 +188,9 @@ void DRsimDetectorConstruction::ModuleBuild(G4LogicalVolume* ModuleLogical_[],
       DRsimCellParameterisation* PMTcellParam = new DRsimCellParameterisation(fTowerXY.first,fTowerXY.second);
       G4PVParameterised* PMTcellPhysical = new G4PVParameterised("PMTcellPhysical",PMTcellLogical_[i],SiPMlayerLogical,kXAxis,fTowerXY.first*fTowerXY.second,PMTcellParam);
 
-      G4VSolid* PMTcathSolid = new G4Box("PMTcathSolid", 1.2/2. *mm, 1.2/2. *mm, 0.01/2. *mm );
+      G4VSolid* PMTcathSolid = new G4Box("PMTcathSolid", 1.2/2. *mm, 1.2/2. *mm, filterT/2. *mm );
       PMTcathLogical_[i] = new G4LogicalVolume(PMTcathSolid,FindMaterial("Silicon"),"PMTcathLogical_");
-      new G4PVPlacement(0,G4ThreeVector(0.,0.,(PMTT-0.01)/2.*mm),PMTcathLogical_[i],"PMTcathPhysical",PMTcellLogical_[i],false,0,checkOverlaps);
+      new G4PVPlacement(0,G4ThreeVector(0.,0.,(PMTT-filterT)/2.*mm),PMTcathLogical_[i],"PMTcathPhysical",PMTcellLogical_[i],false,0,checkOverlaps);
       new G4LogicalSkinSurface("Photocath_surf",PMTcathLogical_[i],FindSurface("SiPMSurf"));
 
       G4VSolid* filterSolid = new G4Box("filterSolid", 1.2/2. *mm, 1.2/2. *mm, filterT/2. *mm );

@@ -40,6 +40,15 @@ G4bool DRsimSiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*) {
   DRsimSiPMHit* hit = NULL;
 
   for (G4int i = 0; i < nofHits; i++) {
+
+    // G4cout << " Hit iteration : " 
+    //        << i << " " 
+    //        << SiPMnum << " " 
+    //        << (*fHitCollection)[i]->GetSiPMnum() << " " 
+    //        << fModuleNum << " " 
+    //        << (*fHitCollection)[i]->GetModuleNum() << " "
+    //        << G4endl;
+    
     if ( (*fHitCollection)[i]->GetSiPMnum() == SiPMnum && (*fHitCollection)[i]->GetModuleNum() == fModuleNum ) {
       hit = (*fHitCollection)[i];
       break;
