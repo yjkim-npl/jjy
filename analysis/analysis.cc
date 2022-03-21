@@ -6,6 +6,7 @@
 #include "TROOT.h"
 #include "TStyle.h"
 #include "TH1.h"
+#include "TH2.h"
 #include "TCanvas.h"
 #include "TF1.h"
 #include "TPaveStats.h"
@@ -52,6 +53,9 @@ int main(int argc, char* argv[]) {
   TH1F* tNhit_C = new TH1F("nHits_C","Number of Cerenkov p.e./SiPM;p.e.;n",50,0.,50.);
   tNhit_C->Sumw2(); tNhit_C->SetLineColor(kBlue); tNhit_C->SetLineWidth(2);
 
+  TH2D* t2DhitC = new TH2D("2D Hit C", "", 300, -0.5, 299.5, 300, -0.5, 299.5); t2DhitC->Sumw2(); t2DhitC->SetStats(0);
+  TH2D* t2DhitS = new TH2D("2D Hit S", "", 300, -0.5, 299.5, 300, -0.5, 299.5); t2DhitS->Sumw2(); t2DhitS->SetStats(0);
+
   unsigned int entries = drInterface->entries();
   while (drInterface->numEvt() < entries) {
     if (drInterface->numEvt() % 100 == 0) printf("Analyzing %dth event ...\n", drInterface->numEvt());
@@ -82,12 +86,17 @@ int main(int argc, char* argv[]) {
 
     int nHitC = 0; int nHitS = 0;
     for (auto tower = drEvt.towers.begin(); tower != drEvt.towers.end(); ++tower) {
+      int moduleNum = tower->ModuleNum;
       for (auto sipm = tower->SiPMs.begin(); sipm != tower->SiPMs.end(); ++sipm) {
+        int plateNum = sipm->x; int fiberNum = sipm->y; 
         if ( RecoInterface::IsCerenkov(sipm->x,sipm->y) ) {
           tNhit_C->Fill(sipm->count);
           for (const auto timepair : sipm->timeStruct) {
             tT_C->Fill(timepair.first.first+0.05,timepair.second);
-            if (timepair.first.first < 35) nHitC += timepair.second;
+            if (timepair.first.first < 35) {
+              nHitC += timepair.second;
+              t2DhitC->Fill(60*(moduleNum%5)+fiberNum, 60*(moduleNum/5)+plateNum, timepair.second);
+            }
           }
           for (const auto wavpair : sipm->wavlenSpectrum) {
             tWav_C->Fill(wavpair.first.first,wavpair.second);
@@ -95,6 +104,7 @@ int main(int argc, char* argv[]) {
         } else {
           tNhit_S->Fill(sipm->count);
           nHitS += sipm->count;
+          t2DhitS->Fill(60*(moduleNum%5)+fiberNum, 60*(moduleNum/5)+plateNum, sipm->count);
           for (const auto timepair : sipm->timeStruct) {
             tT_S->Fill(timepair.first.first+0.05,timepair.second);
           }
@@ -121,6 +131,9 @@ int main(int argc, char* argv[]) {
 
   tHit_C->Draw("Hist"); c->SaveAs(outputname+"_nHitpEventC.png");
   tHit_S->Draw("Hist"); c->SaveAs(outputname+"_nHitpEventS.png");
+
+  t2DhitS->Draw("COLZ"); c->SaveAs(outputname+"_n2DHitS.png");
+  t2DhitC->Draw("COLZ"); c->SaveAs(outputname+"_n2DHitC.png");
 
   tT_C->Draw("Hist"); c->SaveAs(outputname+"_tC.png");
   tT_S->Draw("Hist"); c->SaveAs(outputname+"_tS.png");
