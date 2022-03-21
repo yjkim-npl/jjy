@@ -1,4 +1,4 @@
-# TB2022 DRC
+# DRC generic
 Repository for GEANT4 simulation &amp; analysis of the dual-readout calorimeter for general purpose.
 
 ## How-to
