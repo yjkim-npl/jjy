@@ -11,4 +11,4 @@ should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
 transfer_input_files = {path}/DRC_generic/install/bin, {path}/DRC_generic/install/lib, {path}/DRC_generic/install/init.mac, /DRC_generic/install/run_ele.mac
 
-queue 250
+queue 500
