@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
             tT_C->Fill(timepair.first.first+0.05,timepair.second);
             if (timepair.first.first < 35) {
               nHitC += timepair.second;
-              t2DhitC->Fill(60*(moduleNum%5)+fiberNum, 60*(moduleNum/5)+plateNum, timepair.second);
+              t2DhitC->Fill(60*(moduleNum%7)+fiberNum, 60*(moduleNum/7)+plateNum, timepair.second);
             }
           }
           for (const auto wavpair : sipm->wavlenSpectrum) {
@@ -104,7 +104,7 @@ int main(int argc, char* argv[]) {
         } else {
           tNhit_S->Fill(sipm->count);
           nHitS += sipm->count;
-          t2DhitS->Fill(60*(moduleNum%5)+fiberNum, 60*(moduleNum/5)+plateNum, sipm->count);
+          t2DhitS->Fill(60*(moduleNum%7)+fiberNum, 60*(moduleNum/7)+plateNum, sipm->count);
           for (const auto timepair : sipm->timeStruct) {
             tT_S->Fill(timepair.first.first+0.05,timepair.second);
           }
