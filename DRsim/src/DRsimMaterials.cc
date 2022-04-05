@@ -59,7 +59,11 @@ void DRsimMaterials::CreateMaterials() {
   G4Element* O  = new G4Element("Oxygen"  ,symbol="O" , z=8., a=16.00*g/mole);
   G4Element* F  = new G4Element("Fluorine",symbol="F" , z=9., a=18.9984*g/mole);
 
-  fCu = new G4Material("Copper", z=29., a=63.546*g/mole, density=8.96*g/cm3);
+  fCu = new G4Material("Copper"  , z = 29., a = 63.546 * g/mole, density = 8.96  * g/cm3);
+  fW  = new G4Material("Tungsten", z = 74., a = 183.84 * g/mole, density = 19.30 * g/cm3);
+  fFe = new G4Material("Iron"    , z = 26., a = 55.845 * g/mole, density = 7.874 * g/cm3);
+  fPb = new G4Material("Lead"    , z = 82., a = 207.2  * g/mole, density = 11.35 * g/cm3);
+
   fSi = new G4Material("Silicon", z=14., a=28.09*g/mole, density=2.33*g/cm3);
   fAl = new G4Material("Aluminum", z=13., a=26.98*g/mole, density=2.699*g/cm3);
 
