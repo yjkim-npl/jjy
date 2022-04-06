@@ -24,6 +24,9 @@ private:
   G4Material* fPMMA;
   G4Material* fPS;
   G4Material* fCu;
+  G4Material* fW;
+  G4Material* fPb;
+  G4Material* fFe;
   G4Material* fSi;
   G4Material* fAl;
   G4Material* fGlass;
