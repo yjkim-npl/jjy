@@ -53,8 +53,8 @@ int main(int argc, char* argv[]) {
   TH1F* tNhit_C = new TH1F("nHits_C","Number of Cerenkov p.e./SiPM;p.e.;n",50,0.,50.);
   tNhit_C->Sumw2(); tNhit_C->SetLineColor(kBlue); tNhit_C->SetLineWidth(2);
 
-  TH2D* t2DhitC = new TH2D("2D Hit C", "", 300, -0.5, 299.5, 300, -0.5, 299.5); t2DhitC->Sumw2(); t2DhitC->SetStats(0);
-  TH2D* t2DhitS = new TH2D("2D Hit S", "", 300, -0.5, 299.5, 300, -0.5, 299.5); t2DhitS->Sumw2(); t2DhitS->SetStats(0);
+  TH2D* t2DhitC = new TH2D("2D Hit C", "", 420, -0.5, 419.5, 420, -0.5, 419.5); t2DhitC->Sumw2(); t2DhitC->SetStats(0);
+  TH2D* t2DhitS = new TH2D("2D Hit S", "", 420, -0.5, 419.5, 420, -0.5, 419.5); t2DhitS->Sumw2(); t2DhitS->SetStats(0);
 
   unsigned int entries = drInterface->entries();
   while (drInterface->numEvt() < entries) {

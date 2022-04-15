@@ -27,7 +27,7 @@ using namespace std;
 G4ThreadLocal DRsimMagneticField* DRsimDetectorConstruction::fMagneticField = 0;
 G4ThreadLocal G4FieldManager* DRsimDetectorConstruction::fFieldMgr = 0;
 
-int DRsimDetectorConstruction::fNofRow = 5;
+int DRsimDetectorConstruction::fNofRow = 7;
 int DRsimDetectorConstruction::fNofModules = fNofRow * fNofRow;
 
 DRsimDetectorConstruction::DRsimDetectorConstruction()
@@ -136,11 +136,12 @@ void DRsimDetectorConstruction::ConstructSDandField() {
   G4String SiPMName = "SiPMSD";
 
   // ! Not a memory leak - SDs are deleted by G4SDManager. Deleting them manually will cause double delete!
-
-  for (int i = 0; i < fNofModules; i++) {
-    DRsimSiPMSD* SiPMSDmodule = new DRsimSiPMSD("Module"+std::to_string(i), "ModuleC"+std::to_string(i), fModuleProp.at(i));
-    SDman->AddNewDetector(SiPMSDmodule);
-    PMTcathLogical[i]->SetSensitiveDetector(SiPMSDmodule);
+  if ( doPMT ) {
+    for (int i = 0; i < fNofModules; i++) {
+      DRsimSiPMSD* SiPMSDmodule = new DRsimSiPMSD("Module"+std::to_string(i), "ModuleC"+std::to_string(i), fModuleProp.at(i));
+      SDman->AddNewDetector(SiPMSDmodule);
+      PMTcathLogical[i]->SetSensitiveDetector(SiPMSDmodule);
+    }
   }
 }
 
