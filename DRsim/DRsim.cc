@@ -13,6 +13,8 @@
 #include "FTFP_BERT.hh"
 #include "Randomize.hh"
 
+#define G4VIS_USE
+#define G4UI_USE
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
 #endif
@@ -23,6 +25,8 @@
 
 int main(int argc, char** argv) {
   #ifdef G4UI_USE
+	cout << argc << endl;
+	cout << argv[0] << endl;
   // Detect interactive mode (if no arguments) and define UI session
   G4UIExecutive* ui = 0;
   if ( argc == 1 ) ui = new G4UIExecutive(argc, argv);
